@@ -2,15 +2,20 @@ import pygame
 from constants import PLAYER_RADIUS, PLAYER_TURN_SPEED, PLAYER_SPEED
 from circleshape import CircleShape
 
-class Player(CircleShape):
-    def __init__(self, x, y):
+class Player(pygame.sprite.Sprite):
+    def __init__(self, x=100, y=100):
         # Вызов конструктора родительского класса CircleShape с цветом (красный) и радиусом PLAYER_RADIUS
-        super().__init__(x, y, PLAYER_RADIUS)
+        super().__init__()
 
-        self.color = (255, 255, 255)
+        self.position = pygame.Vector2(x, y)
 
         self.rotation = 0
+        
+        self.color = (255, 255, 255)
 
+        self.rect = pygame.Rect(0, 0, PLAYER_RADIUS * 2, PLAYER_RADIUS * 2)
+        self.rect.center = self.position  # Центрируем прямоугольник на позиции
+        
     def move(self, dt, forward=True):
         # создаём единичный вектор, направленный вверх
         forward_vector = pygame.Vector2(0, 1).rotate(self.rotation)
@@ -21,14 +26,15 @@ class Player(CircleShape):
         
         # перемещаем игрока
         self.position += forward_vector * PLAYER_SPEED * dt
+        
 
     # in the player class
     def triangle(self):
         forward = pygame.Vector2(0, 1).rotate(self.rotation)
-        right = pygame.Vector2(0, 1).rotate(self.rotation + 90) * self.radius / 1.5
-        a = self.position + forward * self.radius
-        b = self.position - forward * self.radius - right
-        c = self.position - forward * self.radius + right
+        right = pygame.Vector2(0, 1).rotate(self.rotation + 90) * PLAYER_RADIUS / 1.5
+        a = self.position + forward * PLAYER_RADIUS
+        b = self.position - forward * PLAYER_RADIUS - right
+        c = self.position - forward * PLAYER_RADIUS + right
         print(f"Triangle points: A={a}, B={b}, C={c}")
         return [a, b, c]
 

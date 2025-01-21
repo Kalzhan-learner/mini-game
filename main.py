@@ -14,15 +14,28 @@ def main():
     # Переменная для хранения времени в каждом кадре
     dt = 0
 
+    # Создание групп
+    updatable = []  # Все объекты, которые могут быть обновлены
+    drawable = []   # Все объекты, которые могут быть нарисованы
+
+    # Добавляем Player в обе группы
+    updatable.append(player)
+    drawable.append(player)
+
     running = True
     while running:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 return
         
-        player.update(dt)
-        screen.fill((0, 0, 0))
-        player.draw(screen)
+        dt = clock.tick(60) / 1000  # Расчет времени между кадрами
+        for obj in updatable:
+            obj.update(dt)
+
+        # Рисуем все объекты в drawable
+        screen.fill((0, 0, 0))  # Заливаем экран черным
+        for obj in drawable:
+            obj.draw(screen)
 
         pygame.display.flip()
 
