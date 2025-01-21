@@ -1,6 +1,6 @@
 import pygame
-from circleshape import CircleShape
 
+# Base class for game objects
 class CircleShape(pygame.sprite.Sprite):
     def __init__(self, x, y, radius):
         # we will be using this later
@@ -21,14 +21,3 @@ class CircleShape(pygame.sprite.Sprite):
         # sub-classes must override
         pass
 
-
-
-class Player(CircleShape):
-    def __init__(self, x, y, radius):
-        super().__init__(x, y, radius)
-
-    def draw(self, screen):
-        pygame.draw.circle(screen, (0, 255, 0), (int(self.position.x), int(self.position.y)), self.radius)
-
-    def update(self, dt):
-        self.position += self.velocity * dt

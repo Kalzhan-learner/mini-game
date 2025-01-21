@@ -1,43 +1,35 @@
 import pygame
-from constants import *  # Импортируем SCREEN_WIDTH и SCREEN_HEIGHT
+from constants import SCREEN_WIDTH, SCREEN_HEIGHT, PLAYER_RADIUS
+from player import Player
 
 def main():
-    # Инициализация Pygame
     pygame.init()
 
-    # Создание окна с размерами из constants.py
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
-    pygame.display.set_caption("Простой игровой цикл")  # Заголовок окна
-    print("Game window created!")
+
+    player = Player(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)
 
     clock = pygame.time.Clock()
 
+    # Переменная для хранения времени в каждом кадре
     dt = 0
 
-    # Основной игровой цикл
-    running = True  # Игра продолжается, пока running = True
+    running = True
     while running:
-        print("Waiting for events...")
-
-        # Обработка всех событий
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                running = False  # Закрытие игры
+                return
+        
+        player.update(dt)
+        screen.fill((0, 0, 0))
+        player.draw(screen)
 
-        # Заполнение экрана чёрным цветом
-        screen.fill((0, 0, 0))  # Чёрный фон для игры
-
-        dt = clock.tick(60) / 1000
-        # Обновление экрана
         pygame.display.flip()
 
-        # Дополнительная отладочная информация
-        print("Game is running...")
+        dt = clock.tick(60) / 1000
 
-    # Завершение работы Pygame
     pygame.quit()
-    print("Game has ended.")
+
 
 if __name__ == "__main__":
     main()
-
