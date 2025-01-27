@@ -1,6 +1,8 @@
 import pygame
 from constants import SCREEN_WIDTH, SCREEN_HEIGHT, PLAYER_RADIUS
 from player import Player
+from asteroidfield import AsteroidField
+from asteroid import Asteroid
 
 def main():
     pygame.init()
@@ -22,6 +24,11 @@ def main():
     updatable.append(player)
     drawable.append(player)
 
+    asteroids = pygame.sprite.Group()  # Группа для астероидов
+    asteroid_field = AsteroidField(asteroids)  # Создаем объект AsteroidField и передаем группу
+    updatable.append(asteroid_field)  # Добавляем в список обновляемых объектов
+    drawable.append(asteroid_field)   # Добавляем в список рисуемых объектов
+
     running = True
     while running:
         for event in pygame.event.get():
@@ -39,7 +46,7 @@ def main():
 
         pygame.display.flip()
 
-        dt = clock.tick(60) / 1000
+        # dt = clock.tick(60) / 1000
 
     pygame.quit()
 
