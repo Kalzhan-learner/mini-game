@@ -11,7 +11,8 @@ def main():
 
     # Создаем группу для игрока
     player_group = pygame.sprite.Group()
-
+    shots_group = pygame.sprite.Group()  # Группа пуль
+    asteroids_group = pygame.sprite.Group()  # Группа астероидов
     player = Player(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)
 
     clock = pygame.time.Clock()
@@ -20,8 +21,8 @@ def main():
     dt = 0
 
     # Создание групп
-    updatable = []  # Все объекты, которые могут быть обновлены
-    drawable = []   # Все объекты, которые могут быть нарисованы
+    updatable = [player, AsteroidField(asteroids_group)]  # Добавляем объекты для обновления
+    drawable = [player, AsteroidField(asteroids_group)]  # Добавляем объекты для рисования
 
     # Добавляем Player в обе группы
     updatable.append(player)
@@ -52,10 +53,17 @@ def main():
             obj.update(dt)
 
         # Проверка столкновений
-        for asteroid in asteroids:
+        for asteroid in asteroids_group:
             if player.check_collision(asteroid):
                 print("Game over!")
                 running = False
+
+        # Проверка столкновений между пулями и астероидами
+        for asteroid in asteroids_group:
+            for shot in player.shots:  # Перебираем все пули
+                if asteroid.rect.colliderect(shot.rect):  # Проверка на столкновение
+                    asteroid.kill()  # Удаляем астероид
+                    shot.kill()  # Удаляем пулю
 
         # Рисуем все объекты в drawable
         screen.fill((0, 0, 0))  # Заливаем экран черным

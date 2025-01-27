@@ -70,27 +70,41 @@ class Player(CircleShape):
             self.move(dt, forward=False)  # двигаем игрока назад
 
         # Обрабатываем выстрел
-        if keys[pygame.K_SPACE]:
+        if keys[pygame.K_SPACE] and self.shoot_timer <= 0:
             self.shoot()
+            self.shoot_timer = PLAYER_SHOOT_COOLDOWN
+        
+        # Обрабатываем выстрел
+        # if keys[pygame.K_SPACE]:
+        #     self.shoot()
 
         # Уменьшаем таймер
-        if self.shoot_timer > 0:
-            self.shoot_timer -= dt
+        # if self.shoot_timer > 0:
+        #     self.shoot_timer -= dt
 
         # Обновляем пули
         self.shots.update(dt)
 
+        # Получаем астероиды из AsteroidField
+        # asteroids = asteroid_field.get_asteroids()
+        
+
+        # Обновляем таймер для стрельбы
+        if self.shoot_timer > 0:
+            self.shoot_timer -= dt
+
 
     def shoot(self):
-        # Создаем новую пулю
-        forward_vector = pygame.Vector2(0, 1).rotate(self.rotation)
-        velocity = forward_vector * PLAYER_SHOOT_SPEED # Умножаем на скорость выстрела
-        shot = Shot(self.position.x, self.position.y, velocity) # Создаем пулю
+        if self.shoot_timer <= 0:  # Если прошло достаточно времени для следующего выстрела
+            forward_vector = pygame.Vector2(0, 1).rotate(self.rotation)  # Направление выстрела
+            velocity = forward_vector * PLAYER_SHOOT_SPEED  # Умножаем на скорость выстрела
+            shot = Shot(self.position.x, self.position.y, velocity)  # Создаем пулю
         
-        self.shots.add(shot)  # Добавляем пулю в группу
+            self.shots.add(shot)  # Добавляем пулю в группу пуль
+            self.shoot_timer = PLAYER_SHOOT_COOLDOWN  # Сброс таймера
+        else:
+            self.shoot_timer -= dt  # Уменьшаем таймер
 
-        # Сбрасываем таймер
-        self.shoot_timer = PLAYER_SHOOT_COOLDOWN
 
 
 

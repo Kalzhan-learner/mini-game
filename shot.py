@@ -24,3 +24,7 @@ class Shot(CircleShape):
     def draw(self, screen):
         # Рисуем пулю (используем self.image для рисования)
         screen.blit(self.image, self.rect)
+
+    def kill(self):
+        # Удаляем пулю из всех групп, чтобы она больше не обновлялась и не рисовалась
+        super().kill()

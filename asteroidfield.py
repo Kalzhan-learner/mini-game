@@ -40,9 +40,16 @@ class AsteroidField:
             position = edge[1](random.uniform(0, 1))
             kind = random.randint(1, ASTEROID_KINDS)
             self.spawn(ASTEROID_MIN_RADIUS * kind, position, velocity)
+        
+        # Здесь астероиды обновляются сами по себе, так как они реализуют метод update
+        self.asteroids_group.update(dt)
 
     def draw(self, screen):
         self.asteroids_group.draw(screen)  # Рисуем все астероиды из группы
+
+    # Метод для получения астероидов
+    def get_asteroids(self):
+        return self.asteroids_group
 
 
 
