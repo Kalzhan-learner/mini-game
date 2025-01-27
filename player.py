@@ -2,10 +2,14 @@ import pygame
 from constants import PLAYER_RADIUS, PLAYER_TURN_SPEED, PLAYER_SPEED
 from circleshape import CircleShape
 
-class Player(pygame.sprite.Sprite):
-    def __init__(self, x=100, y=100):
+class Player(CircleShape):
+    def __init__(self, x=100, y=100, groups=None):
+        if groups is None:
+            groups = []
+        elif isinstance(groups, pygame.sprite.Group):
+            groups = [groups]  # Если передана одна группа, упакуем ее в список
         # Вызов конструктора родительского класса CircleShape с цветом (красный) и радиусом PLAYER_RADIUS
-        super().__init__()
+        super().__init__(x, y, PLAYER_RADIUS) # Вызов конструктора родительского класса CircleShape
 
         self.position = pygame.Vector2(x, y)
 

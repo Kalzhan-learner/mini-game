@@ -9,6 +9,9 @@ def main():
 
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 
+    # Создаем группу для игрока
+    player_group = pygame.sprite.Group()
+
     player = Player(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)
 
     clock = pygame.time.Clock()
@@ -38,6 +41,12 @@ def main():
         dt = clock.tick(60) / 1000  # Расчет времени между кадрами
         for obj in updatable:
             obj.update(dt)
+
+        # Проверка столкновений
+        for asteroid in asteroids:
+            if player.check_collision(asteroid):
+                print("Game over!")
+                running = False
 
         # Рисуем все объекты в drawable
         screen.fill((0, 0, 0))  # Заливаем экран черным
