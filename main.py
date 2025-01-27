@@ -1,5 +1,5 @@
 import pygame
-from constants import SCREEN_WIDTH, SCREEN_HEIGHT, PLAYER_RADIUS
+from constants import SCREEN_WIDTH, SCREEN_HEIGHT, PLAYER_RADIUS, PLAYER_SHOOT_SPEED
 from player import Player
 from asteroidfield import AsteroidField
 from asteroid import Asteroid
@@ -31,6 +31,15 @@ def main():
     asteroid_field = AsteroidField(asteroids)  # Создаем объект AsteroidField и передаем группу
     updatable.append(asteroid_field)  # Добавляем в список обновляемых объектов
     drawable.append(asteroid_field)   # Добавляем в список рисуемых объектов
+
+    # Добавляем пули в список обновляемых и рисуемых объектов
+    updatable.append(player.shots)
+    drawable.append(player.shots)
+    
+    # Создаем группу для пуль
+    # all_shots = pygame.sprite.Group()  # Группа для всех пуль
+    # updatable.append(all_shots)  # Добавляем пули в обновляемые объекты
+    # drawable.append(all_shots)   # Добавляем пули в рисуемые объекты
 
     running = True
     while running:

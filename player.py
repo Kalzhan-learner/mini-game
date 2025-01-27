@@ -1,6 +1,7 @@
 import pygame
-from constants import PLAYER_RADIUS, PLAYER_TURN_SPEED, PLAYER_SPEED
+from constants import PLAYER_RADIUS, PLAYER_TURN_SPEED, PLAYER_SPEED, PLAYER_SHOOT_SPEED
 from circleshape import CircleShape
+from shot import Shot
 
 class Player(CircleShape):
     def __init__(self, x=100, y=100, groups=None):
@@ -19,6 +20,8 @@ class Player(CircleShape):
 
         self.rect = pygame.Rect(0, 0, PLAYER_RADIUS * 2, PLAYER_RADIUS * 2)
         self.rect.center = self.position  # Центрируем прямоугольник на позиции
+        
+        self.shots = pygame.sprite.Group()  # Группа для пуль
         
     def move(self, dt, forward=True):
         # создаём единичный вектор, направленный вверх
@@ -64,6 +67,22 @@ class Player(CircleShape):
             self.move(dt, forward=True)  # двигаем игрока вперёд
         if keys[pygame.K_s]:
             self.move(dt, forward=False)  # двигаем игрока назад
+
+        # Обрабатываем выстрел
+        if keys[pygame.K_SPACE]:
+            self.shoot()
+
+        # Обновляем пули
+        self.shots.update(dt)
+
+
+    def shoot(self):
+        # Создаем новую пулю
+        forward_vector = pygame.Vector2(0, 1).rotate(self.rotation)
+        velocity = forward_vector * PLAYER_SHOOT_SPEED # Умножаем на скорость выстрела
+        shot = Shot(self.position.x, self.position.y, velocity) # Создаем пулю
+        
+        self.shots.add(shot)  # Добавляем пулю в группу
 
 
 
